@@ -1,0 +1,168 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('fon.jpg');
+  background-size: cover; /* Растягиваем изображение на всю область фона */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.container {
+  position: relative;
+}
+
+.header-text {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.header-text p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+header {
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
+}
+
+.auth-btn {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  position: absolute;
+  top: 20px; /* Располагаем в верхнем краю */
+  right: 20px; /* Располагаем в правом краю */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* Уменьшаем расстояние сверху для уменьшения модального окна */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 20%; /* Уменьшаем ширину модального окна */
+  border-radius: 30px; /* Задаем радиус закругления углов */
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"],
+button[type="submit"] {
+  margin: 5px 0;
+  padding: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+  margin: 5px 0;
+  padding: 10px;
+  width: 95%;
+  max-width: 500px; /* Ограничиваем максимальную ширину */
+}
+
+button[type="submit"] {
+  background-color: blue;
+  color: white;
+  border-radius: 30px; /* Задаем радиус закругления углов */
+  cursor: pointer;
+}
+
+p {
+  margin-top: 10px;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.message {
+  position: absolute;
+  top: -50px; /* Располагаем над кнопкой */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: none;
+}
+
+#loginMessage {
+  color: red;
+  font-weight: bold;
+}
+
+.exchange-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 2px solid #4CAF50;
+}
+
+.exchange-btn:hover {
+  background-color: white;
+  color: #4CAF50;
+}

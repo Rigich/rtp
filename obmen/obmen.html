@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обмен почтой</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('fon.jpg'); /* Установка изображения в качестве фона */
+            background-size: cover; /* Масштабирование изображения по размеру окна */
+            text-align: center;
+        }
+        
+        #exchange, #menu {
+            width: 80%;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.8); /* Прозрачный белый фон блоков */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #getCodeButton {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="exchange">
+        <h1>Присупим к обмену</h1>
+        <button onclick="showMenu()">Продолжить обмен</button>
+    </div>
+    
+    <div id="menu" style="display: none;">
+        <h2>Смените почту на нашу</h2>
+        <p>Чтобы получить нашу почту, нажмите кнопку ниже:</p>
+        <button onclick="getNewMail()">Получить почту</button>
+        <button id="getCodeButton" onclick="getCodeFromEmail()">Получить код с почты</button>
+        <div id="emailContent"></div>
+    </div>
+
+    <script>
+        // Проверка, была ли уже получена почта
+        function isEmailRequested(email) {
+            var usedEmails = JSON.parse(localStorage.getItem('usedEmails')) || [];
+            return usedEmails.includes(email);
+        }
+
+        // Установка флага о запросе почты
+        function setEmailRequested(email) {
+            var usedEmails = JSON.parse(localStorage.getItem('usedEmails')) || [];
+            usedEmails.push(email);
+            localStorage.setItem('usedEmails', JSON.stringify(usedEmails));
+        }
+
+        function showMenu() {
+            document.getElementById("exchange").style.display = "none";
+            document.getElementById("menu").style.display = "block";
+        }
+
+        function getNewMail() {
+            // Если почта уже была запрошена, не делаем ничего
+            if (isEmailRequested()) {
+                document.getElementById("emailContent").innerHTML = "Почта уже была запрошена";
+                return;
+            }
+
+            // Создаем новый объект XMLHttpRequest
+            var xhttp = new XMLHttpRequest();
+
+            // Отправляем GET-запрос на файл email.txt
+            xhttp.open("GET", "email.txt", true);
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Разделяем содержимое файла по строкам
+                    var lines = this.responseText.split('\n');
+                    // Получаем первую строку (первый адрес электронной почты)
+                    var email = lines.find(line => !isEmailRequested(line.trim()));
+                    if (email) {
+                        // Отображаем полученный адрес электронной почты на странице
+                        document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
+                        // Показываем кнопку "Получить код с почты"
+                        document.getElementById("getCodeButton").style.display = "block";
+                        // Устанавливаем флаг о запросе почты
+                        setEmailRequested(email.trim());
+                    } else {
+                        // Если нет доступных адресов, выводим сообщение
+                        document.getElementById("emailContent").innerHTML = "Нет доступных адресов";
+                    }
+                }
+            };
+            xhttp.send();
+        }
+
+        function getCodeFromEmail() {
+            alert("Пожалуйста, обратитесь в Discord Rigich, вам там мгновенно ответят");
+        }
+
+        // Сброс флага о запросе почты при загрузке страницы
+        window.onload = function() {
+            localStorage.removeItem('usedEmails');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTP - Riga Trade Project</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 0px;
+            z-index: 1000;
+        }
+
+        .exchange-btn {
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Привет дорогой друг! Здесь ты можешь обменять аккаунт в Brawl Stars на донат</h1>
+    </div>
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Авторизация</h2>
+            <div id="notification" class="notification"></div>
+            <!-- Форма авторизации -->
+            <form id="loginForm">
+                <input type="text" id="loginInput" placeholder="Логин" required>
+                <input type="password" id="passwordInput" placeholder="Пароль" required>
+                <h3>ТОЛЬКО ДЛЯ АДМИНИСТРАЦИИ САЙТА</h3>
+                <button type="submit">Войти</button>
+            </form>
+            <p id="loginMessage"></p>
+        </div>
+    </div>
+    <button id="authBtn" class="auth-btn">Авторизация</button>
+    <div class="modal" id="exchangeModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Обмен</h2>
+            <!-- Форма обмена -->
+            <form id="exchangeForm">
+                <label for="cups">Сколько кубков?</label>
+                <input type="text" id="cups" name="cups" required>
+                <label for="legendaries">Сколько легендарок?</label>
+                <input type="text" id="legendaries" name="legendaries" required>
+                <label for="exchangeTo">На что хотите обменять?</label>
+                <input type="text" id="exchangeTo" name="exchangeTo" required>
+                <label for="username">Ваш ник:</label>
+                <input type="text" id="username" name="username" required>
+                <button type="submit">Обменять</button>  <p><a href="https://discord.gg/8jHR2xJm">Наши отзывы</a></p>
+            </form>
+        </div>
+    </div>
+    
+    <button id="exchangeBtn" class="exchange-btn">Обменять</button>
+    <script src="script.js"></script>
+</body>
+</html>
