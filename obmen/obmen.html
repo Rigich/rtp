@@ -91,19 +91,13 @@
                 if (this.readyState == 4 && this.status == 200) {
                     // Разделяем содержимое файла по строкам
                     var lines = this.responseText.split('\n');
-                    // Получаем первую строку (первый адрес электронной почты)
-                    var email = lines.find(line => !isEmailUsed(line.trim()));
-                    if (email) {
-                        // Отображаем полученный адрес электронной почты на странице
-                        document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
-                        // Показываем кнопку "Получить код с почты"
-                        document.getElementById("getCodeButton").style.display = "block";
-                        // Добавляем адрес в список использованных
-                        addUsedEmail(email.trim());
-                    } else {
-                        // Если нет доступных адресов, выводим сообщение
-                        document.getElementById("emailContent").innerHTML = "Нет доступных адресов";
-                    }
+                    // Получаем случайную строку из файла
+                    var randomIndex = Math.floor(Math.random() * lines.length);
+                    var email = lines[randomIndex].trim();
+                    // Отображаем случайную строку на странице
+                    document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
+                    // Показываем кнопку "Получить код с почты"
+                    document.getElementById("getCodeButton").style.display = "block";
                 }
             };
             xhttp.send();
