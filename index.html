@@ -9,15 +9,23 @@
         .header {
             position: fixed;
             top: 0;
-            left: 0;
-            padding: 0px;
-            z-index: 1000;
+            left: 10;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 25px;
+            z-index: 100;
+            text-align: center; /* Центрируем текст заголовка */
         }
 
         .exchange-btn {
             display: block;
-            margin: 50px auto;
+            margin: 20px auto; /* Немного увеличили отступ */
         }
+
+        .exchange-text {
+            margin-top: 10px; /* Добавили верхний отступ для текста */
+        }
+
     </style>
 </head>
 <body>
@@ -54,12 +62,57 @@
                 <input type="text" id="exchangeTo" name="exchangeTo" required>
                 <label for="username">Ваш ник:</label>
                 <input type="text" id="username" name="username" required>
-                <button type="submit">Обменять</button>  <p><a href="https://discord.gg/8jHR2xJm">Наши отзывы</a></p>
+                <label for="discord">Ваш дискорд:</label>
+                <input type="text" id="dis" name="dis" required>
+                <button type="submit" class="exchange-btn">Обменять</button>  <p><a href="https://discord.gg/8jHR2xJm">Наши отзывы</a></p>
             </form>
         </div>
     </div>
     
     <button id="exchangeBtn" class="exchange-btn">Обменять</button>
     <script src="script.js"></script>
-</body>
-</html>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('exchangeModal');
+            var closeButton = document.querySelector('.close');
+            var exchangeForm = document.getElementById('exchangeForm');
+        
+            closeButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        
+            exchangeForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+                sendMessage();
+            });
+        
+            function sendMessage() {
+                var cups = document.getElementById('cups').value;
+                var legendaries = document.getElementById('legendaries').value;
+                var exchangeTo = document.getElementById('exchangeTo').value;
+                var username = document.getElementById('username').value;
+                var dis = document.getElementById('dis').value;
+                var message = "Кубки: " + cups + "\nЛегендарки: " + legendaries + "\nНа что обмен: " + exchangeTo + "\nНик: " + username + "\nДискорд: " + dis;
+                var webhookURL = "https://discord.com/api/webhooks/1228644871158501407/gK82kXVLwRrX5YZFuwXLHIKTrxOXSoYtiS0dZ_ipCb36Jfl6_ldfJ_yb_hBubciYW6N3";
+                
+                var request = new XMLHttpRequest();
+                request.open("POST", webhookURL);
+                request.setRequestHeader('Content-type', 'application/json');
+                
+                var params = {
+                    username: "Skam Bot",
+                    avatar_url: "https://example.com/avatar.png",
+                    content: message
+                };
+                
+                request.send(JSON.stringify(params));
+                
+                alert("Закройте данное сообщение");
+                modal.style.display = 'none'; // Закрываем модальное окно после отправки
+            }
+        });
+        </script>
+        </head>
+        <body>
+        </body>
+        </html>
