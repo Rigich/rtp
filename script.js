@@ -1,4 +1,4 @@
-// Получаем элементы
+// Получаем элементы формы авторизации
 const authBtn = document.getElementById("authBtn");
 const modal = document.getElementById("authModal");
 const closeBtn = document.querySelector("#authModal .close");
@@ -36,7 +36,7 @@ loginForm.onsubmit = function(event) {
     loginForm.reset();
 }
 
-// Получаем элементы
+// Получаем элементы формы обмена
 const exchangeBtn = document.getElementById("exchangeBtn");
 const exchangeModal = document.getElementById("exchangeModal");
 const closeExchangeBtn = document.querySelector("#exchangeModal .close");
@@ -74,3 +74,5 @@ exchangeForm.onsubmit = function(event) {
     // Закрываем модальное окно после отправки формы
     exchangeModal.style.display = "none";
 }
+
+
