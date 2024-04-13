@@ -7,19 +7,13 @@
     <script>
         // Функция для проверки устройства пользователя и перенаправления на другую страницу
         function checkDeviceAndRedirect() {
-            // Отладочное сообщение
-            console.log("Проверка устройства...");
+            // Определяем ширину экрана устройства
+            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-            // Проверяем, является ли устройство мобильным
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                // Отладочное сообщение
-                console.log("Устройство определено как мобильное. Перенаправление...");
-
-                // Если да, перенаправляем на indexp.html
+            // Проверяем, если ширина экрана меньше некоторого значения (например, 768px),
+            // считаем устройство мобильным и перенаправляем на indexp.html
+            if (screenWidth < 768) {
                 window.location.href = "indexp.html";
-            } else {
-                // Отладочное сообщение
-                console.log("Устройство не является мобильным. Оставляем на текущей странице.");
             }
         }
     </script>
