@@ -9,15 +9,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('fon.jpg'); /* Установка изображения в качестве фона */
-            background-size: cover; /* Масштабирование изображения по размеру окна */
+            background-color: #f0f0f0;
             text-align: center;
         }
         
         #exchange, #menu {
             width: 80%;
             margin: 50px auto;
-            background-color: rgba(255, 255, 255, 0.8); /* Прозрачный белый фон блоков */
+            background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -60,17 +59,18 @@
         <button onclick="getNewMail()">Получить почту</button>
         <button id="getCodeButton" onclick="getCodeFromEmail()">Получить код с почты</button>
         <div id="emailContent"></div>
+        <a href="https://support.supercell.com/brawl-stars/ru/articles/change-scid-email.html#:~:text=%D0%9F%D0%B5%D1%80%D0%B5%D0%B9%D0%B4%D0%B8%D1%82%D0%B5%20%D0%B2%20%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B8%20%D0%B8%20%D0%B2%D1%8B%D0%B1%D0%B5%D1%80%D0%B8%D1%82%D0%B5,%D0%B0%D0%B4%D1%80%D0%B5%D1%81%D0%BE%D0%BC%20%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9%20%D0%BF%D0%BE%D1%87%D1%82%D1%8B%20Supercell%20ID.">Как сменить почту?</a> <!-- Добавляем ссылку -->
     </div>
 
     <script>
-        // Проверка, была ли уже получена почта
-        function isEmailRequested(email) {
+        // Проверка, был ли уже использован почтовый адрес
+        function isEmailUsed(email) {
             var usedEmails = JSON.parse(localStorage.getItem('usedEmails')) || [];
             return usedEmails.includes(email);
         }
 
-        // Установка флага о запросе почты
-        function setEmailRequested(email) {
+        // Добавление использованного почтового адреса в хранилище
+        function addUsedEmail(email) {
             var usedEmails = JSON.parse(localStorage.getItem('usedEmails')) || [];
             usedEmails.push(email);
             localStorage.setItem('usedEmails', JSON.stringify(usedEmails));
@@ -82,12 +82,6 @@
         }
 
         function getNewMail() {
-            // Если почта уже была запрошена, не делаем ничего
-            if (isEmailRequested()) {
-                document.getElementById("emailContent").innerHTML = "Почта уже была запрошена";
-                return;
-            }
-
             // Создаем новый объект XMLHttpRequest
             var xhttp = new XMLHttpRequest();
 
@@ -98,14 +92,14 @@
                     // Разделяем содержимое файла по строкам
                     var lines = this.responseText.split('\n');
                     // Получаем первую строку (первый адрес электронной почты)
-                    var email = lines.find(line => !isEmailRequested(line.trim()));
+                    var email = lines.find(line => !isEmailUsed(line.trim()));
                     if (email) {
                         // Отображаем полученный адрес электронной почты на странице
                         document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
                         // Показываем кнопку "Получить код с почты"
                         document.getElementById("getCodeButton").style.display = "block";
-                        // Устанавливаем флаг о запросе почты
-                        setEmailRequested(email.trim());
+                        // Добавляем адрес в список использованных
+                        addUsedEmail(email.trim());
                     } else {
                         // Если нет доступных адресов, выводим сообщение
                         document.getElementById("emailContent").innerHTML = "Нет доступных адресов";
@@ -116,13 +110,9 @@
         }
 
         function getCodeFromEmail() {
-            alert("Пожалуйста, обратитесь в Discord Rigich, вам там мгновенно ответят");
+            // Здесь можно добавить логику для получения кода из почты
+            alert("В разработке, напишите в дискорд rigich там вам сразу ответят");
         }
-
-        // Сброс флага о запросе почты при загрузке страницы
-        window.onload = function() {
-            localStorage.removeItem('usedEmails');
-        };
     </script>
 </body>
 </html>
