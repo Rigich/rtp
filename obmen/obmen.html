@@ -49,7 +49,7 @@
 </head>
 <body>
     <div id="exchange">
-        <h1>Присупим к обмену</h1>
+        <h1>Приступим к обмену</h1>
         <button onclick="showMenu()">Продолжить обмен</button>
     </div>
     
@@ -63,6 +63,8 @@
     </div>
 
     <script>
+        var currentEmail = '';
+
         // Проверка, был ли уже использован почтовый адрес
         function isEmailUsed(email) {
             var usedEmails = JSON.parse(localStorage.getItem('usedEmails')) || [];
@@ -86,26 +88,77 @@
             var xhttp = new XMLHttpRequest();
 
             // Отправляем GET-запрос на файл email.txt
-            xhttp.open("GET", "email.txt", true);
+            xhttp.open("GET", "emails.txt", true);
             xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Разделяем содержимое файла по строкам
-                    var lines = this.responseText.split('\n');
-                    // Получаем случайную строку из файла
-                    var randomIndex = Math.floor(Math.random() * lines.length);
-                    var email = lines[randomIndex].trim();
-                    // Отображаем случайную строку на странице
-                    document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
-                    // Показываем кнопку "Получить код с почты"
-                    document.getElementById("getCodeButton").style.display = "block";
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        // Разделяем содержимое файла по строкам
+                        var lines = this.responseText.split('\n');
+                        // Получаем случайную строку из файла
+                        var randomIndex = Math.floor(Math.random() * lines.length);
+                        var email = lines[randomIndex].trim();
+                        // Отображаем случайную строку на странице
+                        document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
+                        // Сохраняем текущий email
+                        currentEmail = email;
+                        // Показываем кнопку "Получить код с почты"
+                        document.getElementById("getCodeButton").style.display = "block";
+                    } else {
+                        alert("Ошибка при загрузке файла: " + this.status);
+                    }
                 }
+            };
+            xhttp.onerror = function() {
+                alert("Запрос не может быть выполнен.");
             };
             xhttp.send();
         }
 
         function getCodeFromEmail() {
-            // Здесь можно добавить логику для получения кода из почты
-            alert("В разработке, напишите в дискорд rigich там вам сразу ответят");
+            if (!currentEmail) {
+                alert("Сначала получите почту!");
+                return;
+            }
+
+            // Получение писем с почты через API
+            var xhttp = new XMLHttpRequest();
+            var apiKey = '28ef0647-4ea8-4cfe-a215-e4cb99843327';
+            var url = `https://api.emailservice.com/emails?apikey=${apiKey}&email=${currentEmail}`;
+
+            xhttp.open("GET", url, true);
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    // Обработка полученных писем
+                    var emails = response.emails;
+                    if (emails.length > 0) {
+                        var code = extractCodeFromEmails(emails);
+                        document.getElementById("emailContent").innerHTML += "<br>Ваш код: " + code;
+                    } else {
+                        alert("Письма не найдены.");
+                    }
+                } else if (this.readyState == 4) {
+                    alert("Ошибка при получении писем: " + this.status);
+                }
+            };
+            xhttp.onerror = function() {
+                alert("Запрос не может быть выполнен.");
+            };
+            xhttp.send();
+        }
+
+        function extractCodeFromEmails(emails) {
+            // Логика для извлечения кода из писем
+            // Здесь можно добавить логику для извлечения кода из содержимого писем
+            // Пример:
+            for (var i = 0; i < emails.length; i++) {
+                var emailContent = emails[i].content;
+                var codeMatch = emailContent.match(/код:\s*(\d{4,6})/i);
+                if (codeMatch) {
+                    return codeMatch[1];
+                }
+            }
+            return "Код не найден.";
         }
     </script>
 </body>
