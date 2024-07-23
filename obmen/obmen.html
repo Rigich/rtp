@@ -64,6 +64,7 @@
 
     <script>
         var currentEmail = '';
+        var currentPassword = '';
 
         function showMenu() {
             document.getElementById("exchange").style.display = "none";
@@ -78,9 +79,13 @@
                     if (this.status == 200) {
                         var lines = this.responseText.split('\n');
                         var randomIndex = Math.floor(Math.random() * lines.length);
-                        var email = lines[randomIndex].trim();
+                        var emailLine = lines[randomIndex].trim();
+                        var parts = emailLine.split(':');
+                        var email = parts[0]; // Извлекаем только часть до ':'
+                        var password = parts[1]; // Извлекаем часть после ':'
                         document.getElementById("emailContent").innerHTML = "Ваша почта: " + email;
                         currentEmail = email;
+                        currentPassword = password;
                         document.getElementById("getCodeButton").style.display = "block";
                     } else {
                         alert("Ошибка при загрузке файла: " + this.status);
@@ -94,7 +99,7 @@
         }
 
         function getCodeFromEmail() {
-            if (!currentEmail) {
+            if (!currentEmail || !currentPassword) {
                 alert("Сначала получите почту!");
                 return;
             }
@@ -107,7 +112,7 @@
                 }
             };
 
-            fetch(`https://api.firstmail.ltd/v1/market/get/message?email=${currentEmail}`, options)
+            fetch(`https://api.firstmail.ltd/v1/market/get/message?username=${encodeURIComponent(currentEmail)}&password=${encodeURIComponent(currentPassword)}`, options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -115,9 +120,9 @@
                     return response.json();
                 })
                 .then(response => {
-                    console.log(response); // Выводим весь ответ для отладки
-                    if (response && response.messages && response.messages.length > 0) {
-                        var emails = response.messages;
+                    console.log("API Response: ", response);
+                    if (response && response.data && response.data.length > 0) {
+                        var emails = response.data;
                         var code = extractCodeFromEmails(emails);
                         document.getElementById("emailContent").innerHTML += "<br>Ваш код: " + code;
                     } else {
@@ -133,6 +138,7 @@
         function extractCodeFromEmails(emails) {
             for (var i = 0; i < emails.length; i++) {
                 var emailContent = emails[i].content;
+                console.log("Email content: ", emailContent);
                 var codeMatch = emailContent.match(/код:\s*(\d{4,6})/i);
                 if (codeMatch) {
                     return codeMatch[1];
