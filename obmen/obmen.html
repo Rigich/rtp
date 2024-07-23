@@ -72,7 +72,7 @@
 
         function getNewMail() {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "emails.txt", true);
+            xhttp.open("GET", "email.txt", true);
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
@@ -115,8 +115,9 @@
                     return response.json();
                 })
                 .then(response => {
-                    var emails = response.messages;
-                    if (emails.length > 0) {
+                    console.log(response); // Выводим весь ответ для отладки
+                    if (response && response.messages && response.messages.length > 0) {
+                        var emails = response.messages;
                         var code = extractCodeFromEmails(emails);
                         document.getElementById("emailContent").innerHTML += "<br>Ваш код: " + code;
                     } else {
